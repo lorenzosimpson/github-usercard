@@ -53,11 +53,15 @@ const followersArray = [];
   luishrd
   bigknell
 */
-
+const cards = document.querySelector('.cards')
 //call to github API
 axios.get('https://api.github.com/users/lorenzosimpson')
 .then(response => {
-  console.log(response)
+  console.log(response);
+    cards.appendChild(createCard(response.data))
+})
+.catch(error => {
+  console.log('Data not returned', error)
 });
 
 //begin component builder
@@ -75,11 +79,32 @@ function createCard(obj) {
   const newFollowing = document.createElement('p');
   const newBio = document.createElement('p');
 
+  //add content
+  newImage.src = obj.avatar_url;
+  newName.textContent = obj.name;
+  newUsername.textContent = obj.login;
+  newLocation.textContent = obj.location;
+  newLink.setAttribute('href', obj.html_url);
+  newFollowers.textContent = obj.followers;
+  newFollowing.textContent = obj.following;
+  newBio.textContent = obj.bio;
 
+  //add classLists
+  newCard.classList.add('card');
+  cardInfo.classList.add('card-info');
+  newName.classList.add('name');
+  newUsername.classList.add('username');
 
-
-
-
+  //append to newCard
+  newCard.appendChild(newImage);
+  newCard.appendChild(cardInfo)
+  cardInfo.appendChild(newName);
+  cardInfo.appendChild(newUsername);
+  cardInfo.appendChild(newLocation)
+  cardInfo.appendChild(newProfile);
+  cardInfo.appendChild(newFollowers);
+  cardInfo.appendChild(newFollowing);
+  newProfile.appendChild(newLink);
 
   return newCard;
 }
