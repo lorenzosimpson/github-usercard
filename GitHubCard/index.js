@@ -105,8 +105,8 @@ function createCard(obj) {
   newLocation.textContent = obj.location;
   newLink.setAttribute('href', obj.html_url);
   newLink.textContent = 'Github';
-  newFollowers.textContent = obj.followers;
-  newFollowing.textContent = obj.following;
+  newFollowers.textContent = `${obj.followers} followers`;
+  newFollowing.textContent = `${obj.following} following`;
   newBio.textContent = obj.bio;
 
   //add classLists
