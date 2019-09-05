@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['https://api.github.com/users/SkylerSlatosch', 'https://api.github.com/users/ian-schwartz', 'https://api.github.com/users/BrandyBecker'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -55,14 +55,33 @@ const followersArray = [];
 */
 const cards = document.querySelector('.cards')
 //call to github API
+
+
 axios.get('https://api.github.com/users/lorenzosimpson')
 .then(response => {
-  console.log(response);
-    cards.appendChild(createCard(response.data))
+  cards.appendChild(createCard(response.data))
 })
 .catch(error => {
   console.log('Data not returned', error)
 });
+
+axios.get('https://api.github.com/users/lorenzosimpson/followers')
+.then(followerRes => {
+  followerRes.data.forEach(user => {
+    axios.get(`https://api.github.com/users/${user.login}`)
+    .then(userRes => {
+      cards.appendChild(createCard(userRes.data))
+    })
+    .catch(error => {
+      console.log('Data not returned', error)
+    })
+  })
+})
+.catch(error => {
+  console.log('Data not returned', error)
+});
+
+
 
 //begin component builder
 function createCard(obj) {
@@ -85,6 +104,7 @@ function createCard(obj) {
   newUsername.textContent = obj.login;
   newLocation.textContent = obj.location;
   newLink.setAttribute('href', obj.html_url);
+  newLink.textContent = 'Github';
   newFollowers.textContent = obj.followers;
   newFollowing.textContent = obj.following;
   newBio.textContent = obj.bio;
@@ -105,6 +125,31 @@ function createCard(obj) {
   cardInfo.appendChild(newFollowers);
   cardInfo.appendChild(newFollowing);
   newProfile.appendChild(newLink);
+  cardInfo.appendChild(newBio);
 
   return newCard;
 }
+
+
+// axios.get('https://api.github.com/users/lorenzosimpson/followers')
+// .then(response => {
+//   console.log(response, 'follower data');
+//   response.data.forEach(item => {
+//     const follower = createCard(item)
+//     cards.appendChild(follower)
+//   })
+// })
+// .catch(error => {
+//   console.log('Data not returned', error)
+// });
+
+// followersArray.forEach(item => {
+//   axios.get(item)
+//   .then(response => {
+//   console.log(response);
+//     cards.appendChild(createCard(response.data))
+//   })
+//   .catch(error => {
+//   console.log('Data not returned', error)
+//   });
+// })
