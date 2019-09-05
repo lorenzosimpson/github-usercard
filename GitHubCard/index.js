@@ -53,3 +53,33 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+//call to github API
+axios.get('https://api.github.com/users/lorenzosimpson')
+.then(response => {
+  console.log(response)
+});
+
+//begin component builder
+function createCard(obj) {
+  //create elements
+  const newCard = document.createElement('div');
+  const newImage = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const newName = document.createElement('h3');
+  const newUsername = document.createElement('p');
+  const newLocation = document.createElement('p');
+  const newProfile = document.createElement('p');
+  const newLink = document.createElement('a');
+  const newFollowers = document.createElement('p');
+  const newFollowing = document.createElement('p');
+  const newBio = document.createElement('p');
+
+
+
+
+
+
+
+  return newCard;
+}
