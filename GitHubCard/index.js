@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['https://api.github.com/users/SkylerSlatosch', 'https://api.github.com/users/ian-schwartz', 'https://api.github.com/users/BrandyBecker'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +53,103 @@ const followersArray = [];
   luishrd
   bigknell
 */
+const cards = document.querySelector('.cards')
+//call to github API
+
+
+axios.get('https://api.github.com/users/lorenzosimpson')
+.then(response => {
+  cards.appendChild(createCard(response.data))
+})
+.catch(error => {
+  console.log('Data not returned', error)
+});
+
+axios.get('https://api.github.com/users/lorenzosimpson/followers')
+.then(followerRes => {
+  followerRes.data.forEach(user => {
+    axios.get(`https://api.github.com/users/${user.login}`)
+    .then(userRes => {
+      cards.appendChild(createCard(userRes.data))
+    })
+    .catch(error => {
+      console.log('Data not returned', error)
+    })
+  })
+})
+.catch(error => {
+  console.log('Data not returned', error)
+});
+
+
+
+//begin component builder
+function createCard(obj) {
+  //create elements
+  const newCard = document.createElement('div');
+  const newImage = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const newName = document.createElement('h3');
+  const newUsername = document.createElement('p');
+  const newLocation = document.createElement('p');
+  const newProfile = document.createElement('p');
+  const newLink = document.createElement('a');
+  const newFollowers = document.createElement('p');
+  const newFollowing = document.createElement('p');
+  const newBio = document.createElement('p');
+
+  //add content
+  newImage.src = obj.avatar_url;
+  newName.textContent = obj.name;
+  newUsername.textContent = obj.login;
+  newLocation.textContent = obj.location;
+  newLink.setAttribute('href', obj.html_url);
+  newLink.textContent = 'Github';
+  newFollowers.textContent = obj.followers;
+  newFollowing.textContent = obj.following;
+  newBio.textContent = obj.bio;
+
+  //add classLists
+  newCard.classList.add('card');
+  cardInfo.classList.add('card-info');
+  newName.classList.add('name');
+  newUsername.classList.add('username');
+
+  //append to newCard
+  newCard.appendChild(newImage);
+  newCard.appendChild(cardInfo)
+  cardInfo.appendChild(newName);
+  cardInfo.appendChild(newUsername);
+  cardInfo.appendChild(newLocation)
+  cardInfo.appendChild(newProfile);
+  cardInfo.appendChild(newFollowers);
+  cardInfo.appendChild(newFollowing);
+  newProfile.appendChild(newLink);
+  cardInfo.appendChild(newBio);
+
+  return newCard;
+}
+
+
+// axios.get('https://api.github.com/users/lorenzosimpson/followers')
+// .then(response => {
+//   console.log(response, 'follower data');
+//   response.data.forEach(item => {
+//     const follower = createCard(item)
+//     cards.appendChild(follower)
+//   })
+// })
+// .catch(error => {
+//   console.log('Data not returned', error)
+// });
+
+// followersArray.forEach(item => {
+//   axios.get(item)
+//   .then(response => {
+//   console.log(response);
+//     cards.appendChild(createCard(response.data))
+//   })
+//   .catch(error => {
+//   console.log('Data not returned', error)
+//   });
+// })
